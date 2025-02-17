@@ -16,7 +16,7 @@ class AjaxHandler {
     
 
     public static function search_steam_games() {
-        $query = sanitize_text_field($_POST['query']);
+        $query = sanitize_text_field(wp_unslash($_POST['query']));
 
         if (strlen($query) < 3) {
             wp_send_json_error(['message' => __('Please enter at least 3 characters.', 'hw-steam-fetch-games')]);

@@ -37,8 +37,8 @@ class ProcessFetch {
 
         // 2) Fetch Steam API data
         if (isset($_POST['steam_language'])) {
-            $language = sanitize_text_field($_POST['steam_language']);
-        }
+            $language = sanitize_text_field(wp_unslash($_POST['steam_language']));
+        }        
         $api_result = FetchHelpers::fetch_game_data_from_steam($app_id, $language);
         if (!$api_result['success']) {
             error_log("Steam API fetch failed: " . $api_result['message']);
@@ -322,7 +322,9 @@ class ProcessFetch {
             $movie_url = '';
             foreach ($game_data['movies'] as $movie) {
                 if (!empty($movie['mp4']['max'])) {
-                    $movie_url = str_replace('http://', 'https://', sanitize_text_field($movie['mp4']['max']));
+                    $raw_url = wp_unslash($movie['mp4']['max']);
+                    $safe_url = esc_url_raw($raw_url);
+                    $movie_url = str_replace('http://', 'https://', $safe_url);
                     break;
                 }
             }
@@ -330,7 +332,7 @@ class ProcessFetch {
                 update_post_meta($post_id, $movie_meta, $movie_url);
             }
         }
-
+        
         /**
          * Action fired after processing images (featured, capsule, gallery) and movie trailer.
          *

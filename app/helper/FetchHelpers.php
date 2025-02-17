@@ -46,6 +46,8 @@ class FetchHelpers {
             return $existing_id; 
         }
 
+        $image_url = wp_unslash($image_url);
+        $image_url = esc_url_raw($image_url);
         $image_url = str_replace('http://', 'https://', $image_url);
 
         $temp_file = download_url($image_url);

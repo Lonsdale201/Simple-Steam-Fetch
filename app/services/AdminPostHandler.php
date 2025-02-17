@@ -11,7 +11,6 @@ if (!defined('ABSPATH')) {
 class AdminPostHandler {
 
     public static function init() {
-        // Hook into admin_post for logged-in users
         add_action('admin_post_hw_fetch_game_data', [__CLASS__, 'handle_fetch_game_data']);
     }
 
@@ -21,22 +20,24 @@ class AdminPostHandler {
         }
 
         if (!isset($_POST['hw_fetch_game_data_nonce']) || 
-            !wp_verify_nonce($_POST['hw_fetch_game_data_nonce'], 'hw_fetch_game_data_action')) {
-            wp_die(__('Nonce verification failed.', 'hw-steAM-fetch-games'));
+        !wp_verify_nonce(wp_unslash($_POST['hw_fetch_game_data_nonce']), 'hw_fetch_game_data_action')) {
+        wp_die(__('Nonce verification failed.', 'hw-steAM-fetch-games'));
         }
+    
 
         // Validate steam_app_id
         if (!isset($_POST['steam_app_id']) || empty($_POST['steam_app_id'])) {
-            wp_redirect(add_query_arg('error', 'missing_app_id', wp_get_referer()));
+            wp_safe_redirect(add_query_arg('error', 'missing_app_id', wp_get_referer()));
             exit;
         }
 
-        $app_id = sanitize_text_field($_POST['steam_app_id']);
+        $app_id = sanitize_text_field(wp_unslash($_POST['steam_app_id']));
         $app_id = self::extract_app_id($app_id);
-
+        
         $language = isset($_POST['steam_language']) 
-            ? sanitize_text_field($_POST['steam_language']) 
+            ? sanitize_text_field(wp_unslash($_POST['steam_language'])) 
             : 'en'; 
+        
     
         // Check if $app_id is numeric
         if (empty($app_id) || !ctype_digit($app_id)) {

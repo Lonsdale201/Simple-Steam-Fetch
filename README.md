@@ -1,6 +1,6 @@
 # Simple Steam Fetch
 
-Stable tag: 0.2
+Stable tag: 0.2.1
 
 Fetch and import game data from the Steam API. Automatically create custom posts with detailed descriptions, screenshots, and pricing information. Compatible with JetEngine..
 
@@ -119,6 +119,10 @@ You must select which **Custom Post Type (CPT)** to use for saving the imported 
 ---
 
 ## CHANGELOG
+
+### V 0.2.1 _2025.02.18_
+
+- Minor hotfix
 
 ### V 0.2 _2025.02.15_
 

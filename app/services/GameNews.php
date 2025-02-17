@@ -14,7 +14,8 @@ class GameNews {
     }
 
     public static function fetch_news() {
-        if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'hw_steam_news_nonce')) {
+        $nonce = isset($_POST['nonce']) ? wp_unslash($_POST['nonce']) : '';
+        if (empty($nonce) || !wp_verify_nonce($nonce, 'hw_steam_news_nonce')) {
             wp_send_json_error(['message' => __('Invalid nonce.', 'hw-steam-fetch-games')]);
         }
     
@@ -22,8 +23,8 @@ class GameNews {
             wp_send_json_error(['message' => __('Post ID not provided.', 'hw-steam-fetch-games')]);
         }
     
-        $post_id = absint($_POST['post_id']);
-        $feednumber = isset($_POST['feednumber']) ? absint($_POST['feednumber']) : 3; 
+        $post_id = absint(wp_unslash($_POST['post_id']));
+        $feednumber = isset($_POST['feednumber']) ? absint(wp_unslash($_POST['feednumber'])) : 3; 
     
         $app_id = get_post_meta($post_id, '_hw_steam_app_id', true);
         $app_id = absint($app_id);
@@ -46,6 +47,4 @@ class GameNews {
     
         wp_send_json_success($data['appnews']['newsitems']);
     }
-    
-    
 }

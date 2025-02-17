@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Simple Steam Fetch
  * Description: Fetch and import game data from the Steam API. Automatically create custom posts with detailed descriptions, screenshots, and pricing information. Compatible with JetEngine.
- * Version: 0.2
+ * Version: 0.2.1
  * Author: Soczó Kristóf
  * Author URI: https://github.com/Lonsdale201?tab=repositories
  * Plugin URI: https://github.com/Lonsdale201/Simple-Steam-Fetch
